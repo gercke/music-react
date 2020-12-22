@@ -1,19 +1,22 @@
 import React, { memo } from 'react'
-import { NavLink } from 'react-router-dom'
 
+import {headerLinks} from '@/common/local-data'
+
+import { NavLink } from 'react-router-dom'
+import { Input } from 'antd'
+import { SearchOutlined } from '@ant-design/icons'
 import {
     HeaderWrapper,
     HeaderLeft,
     HeaderRight
 } from './style'
-import {headerLinks} from '@/common/local-data'
 
 export default memo(function SJQAppHeader() {
     //业务代码
     const showSelectItem = (item,index) =>{
         if(index<3){
             return(
-                <NavLink to={item.link}  exact>
+                <NavLink to={item.link}>
                     {item.title}
                     <i className="sprite_01 icon"></i>
                 </NavLink>
@@ -45,7 +48,11 @@ export default memo(function SJQAppHeader() {
                         }
                     </div>
                 </HeaderLeft>
-                <HeaderRight>Right</HeaderRight>
+                <HeaderRight>
+                    <Input placeholder="音乐/视频/电台/用户" className="search" prefix={<SearchOutlined />}/>
+                    <button type="link" className="button-auth">创作者中心</button>
+                    <button className="denglu">登录</button>
+                </HeaderRight>
             </div>
             <div className="divline"></div>
         </HeaderWrapper>

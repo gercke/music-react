@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-// import img1 from '@/assets/img/sprite_01.png'
+
 
 export const HeaderWrapper =styled.div`
     height:75px;
@@ -15,7 +15,7 @@ export const HeaderWrapper =styled.div`
 
     .divline{
         height:5px;
-        background-color:#d80000;
+        background-color:#c20c0c;
     }
 `
 
@@ -80,5 +80,54 @@ export const HeaderLeft = styled.div`
 `
 
 export const HeaderRight = styled.div`
+    display:flex;
+    align-items:center;
+    color:#ccc;
+    font-size:12px;
+    .input-center{
+        display:flex;
+    }
+    .search{
+        width:158px;
+        height:32px;
+        border-radius:32px;
+        outline:none;
+        border:0;
+    }
 
+    .search input{
+        font-size:12px;
+    }
+
+    .button-auth{
+        width:90px;
+        height:32px;
+        border-radius:20px;
+        color: #ccc;
+        line-height:32px;
+        border: 1px solid #4F4F4F;
+        background-color:#242424;
+        margin-left:19px;
+    }
+
+    .button-auth:hover,:active{
+        border: 1px solid #fff;
+        cursor:pointer;
+    }
+
+    .denglu{
+        display: block;
+        width:50px;
+        color:#787878;
+        margin-top:2px;
+        font-size:12px;
+        background-color:#242424;
+        margin-left:5px;
+    }
+
+    .denglu:hover{
+        color:#999;
+        cursor:pointer;
+    }
+    
 `
