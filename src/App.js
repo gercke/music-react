@@ -10,7 +10,7 @@ import store from './store'
 import SJQAppHeader from '@/components/app-header';
 import SJQAppFooter from '@/components/app-footer';
 import {HashRouter} from 'react-router-dom'
-
+import SJQPlayerBar from './pages/player/play-bar'
 
 export default memo(function App() {
     return (
@@ -19,6 +19,7 @@ export default memo(function App() {
                 <SJQAppHeader/>
                 {renderRoutes(routes)}
                 <SJQAppFooter/>
+                <SJQPlayerBar/>
             </HashRouter>
         </Provider>
     )

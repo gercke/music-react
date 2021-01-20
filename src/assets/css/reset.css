@@ -96,7 +96,13 @@
   .sprite_table {
     background: url(../img/sprite_table.png) no-repeat 0 9999px;
   }
-  
+
+  .sprite-player {
+    background: url(../img/playbar_sprite.png) no-repeat 0 9999px;
+  }
+
+  /*绝对定位用image-cover，不定位用sprite-cover*/
+
   .image_cover {
     position: absolute;
     left: 0;

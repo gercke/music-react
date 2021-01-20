@@ -4,7 +4,9 @@ import SJQTopBanner from './c-component/top-banner'
 import SJQHotRecommend from './c-component/hot-recommend'
 import SJQNewAlbum from './c-component/new-album'
 import SJQRcmRanking from './c-component/rcm-ranking'
-
+import SJQHotAnchor from './c-component/hot-anchor'
+import SJQSettingSinger from './c-component/setting-singer'
+import SJQUserLogin from './c-component/user-login'
 import { 
     RecommendWrapper,
     Content,
@@ -22,7 +24,11 @@ function SJQRecommend(props) {
                     <SJQNewAlbum></SJQNewAlbum>
                     <SJQRcmRanking></SJQRcmRanking>
                 </RecommendLeft>
-                <RecommendRight></RecommendRight>
+                <RecommendRight>
+                    <SJQUserLogin></SJQUserLogin>
+                    <SJQSettingSinger></SJQSettingSinger>
+                    <SJQHotAnchor></SJQHotAnchor>
+                </RecommendRight>
             </Content>
         </RecommendWrapper>
     )
