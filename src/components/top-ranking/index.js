@@ -1,6 +1,8 @@
 import React, { memo } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { TopRankingWrapper } from './style'
+import { getSongDetailAction } from '@/pages/player/store'
 
 import { getSizeImage } from '@/utils/format-utils'
 
@@ -8,11 +10,17 @@ export default memo(function SJQTopRanking(props) {
     const { info } = props;
     const { tracks =[]} = info; 
 
+    const dispatch = useDispatch();
+
+    const playMusic = (item) =>{
+        // console.log(item.id);
+      dispatch(getSongDetailAction(item.id));
+    }
     return (
         <TopRankingWrapper>
             <div className="header">
                 <div className="image">
-                    <img src={getSizeImage(info.coverImgUrl,80)} />
+                    <img src={getSizeImage(info.coverImgUrl,80)} alt="" />
                     <a href="/todo" className="image_cover"></a>
                 </div>
                 <div className="info">
@@ -32,7 +40,7 @@ export default memo(function SJQTopRanking(props) {
                                 <div className="cont">
                                     <span className="name text-nowrap">{item.name}</span>
                                     <div className="operate">
-                                        <button className="btn play sprite_02"></button>
+                                        <button className="btn play sprite_02" onClick={e=> playMusic(item)}></button>
                                         <button className="btn addto sprite_icon2"></button>
                                         <button className="btn favor sprite_02"></button>
                                     </div>

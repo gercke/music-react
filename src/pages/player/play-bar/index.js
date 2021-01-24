@@ -3,6 +3,7 @@ import {shallowEqual, useDispatch, useSelector} from 'react-redux'
 
 import {getSizeImage ,formatDate, getPlaySong} from '@/utils/format-utils'
 
+import { NavLink } from 'react-router-dom'
 import { Slider } from 'antd';
 import {
     PlaybarWrapper,
@@ -10,7 +11,12 @@ import {
     PlayInfo,
     Operator
 } from './style'
-import { getSongDetailAction } from '../store/actionCreators';
+
+import { 
+    changeSequenceAction, 
+    getSongDetailAction,
+    changeCurrentIndexAndSongAction
+} from '../store/actionCreators';
 
 export default memo(function SJQPlayerBar() {
     //props
@@ -19,8 +25,9 @@ export default memo(function SJQPlayerBar() {
     const [isChange, setIsChange] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     //redux hook
-    const {currentSong} = useSelector(state=>({
-        currentSong: state.getIn(["player","currentSong"])
+    const {currentSong, sequence} = useSelector(state=>({
+        currentSong: state.getIn(["player","currentSong"]),
+        sequence: state.getIn(["player","sequence"])
     }),shallowEqual);
     const dispatch = useDispatch();
 
@@ -29,8 +36,14 @@ export default memo(function SJQPlayerBar() {
     useEffect(() => {
         dispatch(getSongDetailAction(411214279));
     },[dispatch]);
+
     useEffect(() => {
         audioRef.current.src = getPlaySong(currentSong.id);
+        audioRef.current.play().then(res=>{
+            setIsPlaying(true);
+        }).catch(err=>{
+            setIsPlaying(false);
+        })
     }, [currentSong]);
 
     const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
@@ -40,10 +53,11 @@ export default memo(function SJQPlayerBar() {
     const showCurrentTime = formatDate(currentTime,"mm:ss");
     
 
-    const playMusic = () =>{
+    const playMusic = useCallback(() =>{
         isPlaying ? audioRef.current.pause() : audioRef.current.play();
         setIsPlaying(!isPlaying);
-    }
+    },[isPlaying]);
+    
     const timeUpdate =(e) =>{
         // console.log(e.target.currentTime);
         if(!isChange){
@@ -52,6 +66,26 @@ export default memo(function SJQPlayerBar() {
         }
     }
 
+    const changeSequence = () =>{
+        let currentSequence = sequence +1;
+        if(currentSequence > 2){
+            currentSequence =0;
+        }
+        dispatch(changeSequenceAction(currentSequence));
+    }
+
+    const changeMusic = (tag) =>{
+        dispatch(changeCurrentIndexAndSongAction(tag));
+    }
+
+    const handleMusicEnded = () =>{
+        if(sequence === 2 || playList.length === 1){//单曲
+            audioRef.current.currentTime =0;
+            audioRef.current.play();
+        }else{
+            dispatch(changeCurrentIndexAndSongAction(1));
+        }
+    }
     const sliderChange = useCallback((value)=>{
         setIsChange(true);
         const currentTime = value /100 * duration / 1000;
@@ -74,15 +108,15 @@ export default memo(function SJQPlayerBar() {
         <PlaybarWrapper>
             <div className="content wrap-v2">
                 <Control isPlaying={isPlaying}>
-                    <button className="prev"></button>
+                    <button className="prev" onClick={e=>changeMusic(-1)}></button>
                     <button className="play" onClick={e=>playMusic()}></button>
-                    <button className="next"></button>
+                    <button className="next" onClick={e=>changeMusic(1)}></button>
                 </Control>
                 <PlayInfo>
                     <div className="image">
-                        <a href="/#">
+                        <NavLink to="/discover/player">
                             <img src={getSizeImage(picUrl,34)} alt="" />
-                        </a>
+                        </NavLink>
                     </div>
                     <div className="info">
                         <div className="song">
@@ -102,19 +136,19 @@ export default memo(function SJQPlayerBar() {
                         </div>
                     </div>
                 </PlayInfo>
-                <Operator>
+                <Operator sequence={sequence}>
                     <div className="left">
                         <button className="btn favor"></button>
                         <button className="btn share"></button>
                     </div>
                     <div className="right">
                         <button className="btn volume"></button>
-                        <button className="btn loop"></button>
+                        <button className="btn loop" onClick={e=>changeSequence()}></button>
                         <button className="btn playlist"></button>
                     </div>
                 </Operator>
             </div>
-            <audio ref={audioRef} onTimeUpdate={timeUpdate}/>
+            <audio ref={audioRef} onTimeUpdate={timeUpdate} onEnded={handleMusicEnded}/>
         </PlaybarWrapper>
     )
 })

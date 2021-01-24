@@ -136,7 +136,7 @@ export const Operator = styled.div`
         }
         .loop {
             background:url(${require("@/assets/img/playbar_sprite.png").default}) no-repeat;
-            /* background-position: ${props => {
+            background-position: ${props => {
                 switch(props.sequence) {
                 case 1:
                     return "-66px -248px"
@@ -145,8 +145,7 @@ export const Operator = styled.div`
                 default:
                     return "-3px -344px"
                 }
-            }}; */
-            background-position: -66px -248px;
+            }};
         }
 
         .playlist {
