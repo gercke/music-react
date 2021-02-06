@@ -1,9 +1,38 @@
-import React, { memo } from 'react'
+import React, { useEffect, memo } from 'react';
+import { useDispatch } from "react-redux";
+import { useLocation } from 'react-router-dom';
 
-export default memo(function SJQSong() {
-    return (
-        <div>
-            <h2>song</h2>
-        </div>
-    )
+import { 
+  getCategory,
+  getSongList,
+  changeCurrentCategoryAction
+} from "./store/actionCreators";
+
+import SJQSongsHeader from "./c-cpns/songs-header";
+import SJQSongsList from './c-cpns/songs-list';
+import {
+  SongsWrapper
+} from "./style"
+
+export default memo(function SJQSongs() {
+  // redux
+  const dispatch = useDispatch();
+  const cat = useLocation().cat;
+
+  useEffect(() => {
+    dispatch(changeCurrentCategoryAction(cat));
+  }, [dispatch, cat]);
+
+  // hooks
+  useEffect(() => {
+    dispatch(getCategory());
+    dispatch(getSongList(0));
+  }, [dispatch])
+
+  return (
+    <SongsWrapper className="wrap-v2">
+      <SJQSongsHeader/>
+      <SJQSongsList/>
+    </SongsWrapper>
+  )
 })

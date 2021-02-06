@@ -6,6 +6,7 @@ export const AlbumWrapper = styled.div`
         position:relative;
         width: ${props => props.width +"px"};
         height: ${props => props.size +"px"};
+        overflow: hidden;
         margin-top: 15px;
 
         img{
@@ -18,7 +19,7 @@ export const AlbumWrapper = styled.div`
             right: 0;
             top: 0;
             bottom: 0;
-            background-position: 0 ${props => props.bgp};
+            background-position: 0 ${props => props.bgp +"px"};
         }
     }
     .album-info {

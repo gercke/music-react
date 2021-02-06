@@ -38,7 +38,7 @@ export default memo(function SJQNewAlbum() {
                                                                       info={iten}
                                                                       size={100}
                                                                       width={118}
-                                                                      bgp="-570px"  
+                                                                      bgp="-570"  
                                                 />
                                             })
                                         }

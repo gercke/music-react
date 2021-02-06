@@ -4,7 +4,7 @@ import {shallowEqual, useDispatch, useSelector} from 'react-redux'
 import {getSizeImage ,formatDate, getPlaySong} from '@/utils/format-utils'
 
 import { NavLink } from 'react-router-dom'
-import { Slider } from 'antd';
+import { Slider, message } from 'antd';
 import {
     PlaybarWrapper,
     Control,
@@ -15,7 +15,8 @@ import {
 import { 
     changeSequenceAction, 
     getSongDetailAction,
-    changeCurrentIndexAndSongAction
+    changeCurrentIndexAndSongAction,
+    changeCurrentLyricIndexAction
 } from '../store/actionCreators';
 
 export default memo(function SJQPlayerBar() {
@@ -25,9 +26,12 @@ export default memo(function SJQPlayerBar() {
     const [isChange, setIsChange] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     //redux hook
-    const {currentSong, sequence} = useSelector(state=>({
+    const {currentSong, sequence,lyricList,playList,currentLyricIndex} = useSelector(state=>({
         currentSong: state.getIn(["player","currentSong"]),
-        sequence: state.getIn(["player","sequence"])
+        sequence: state.getIn(["player","sequence"]),
+        playList: state.getIn(["player","playList"]),
+        lyricList: state.getIn(["player","lyricList"]),
+        currentLyricIndex: state.getIn(["player","currentLyricIndex"])
     }),shallowEqual);
     const dispatch = useDispatch();
 
@@ -60,9 +64,28 @@ export default memo(function SJQPlayerBar() {
     
     const timeUpdate =(e) =>{
         // console.log(e.target.currentTime);
+        const currentTime  = e.target.currentTime;
         if(!isChange){
-            setCurrentTime(e.target.currentTime *1000);
-            setProgress(currentTime / duration * 100);
+            setCurrentTime(currentTime *1000);
+            setProgress(currentTime * 1000 / duration * 100);
+        }
+        let i = 0;
+        for(; i< lyricList.length ; i++){
+            let lyricItem = lyricList[i];
+            if(currentTime *1000 < lyricItem.time){
+                break;
+            }
+        }
+        if(currentLyricIndex !== i-1 ){
+            dispatch(changeCurrentLyricIndexAction(i-1));
+            console.log(lyricList[i-1]);
+            const content = lyricList[i-1] && lyricList[i-1].content
+            message.open({
+                key: "lyric",
+                content: content,
+                duration: 0,
+                className: "lyric-class"
+            })
         }
     }
 

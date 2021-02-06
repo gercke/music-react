@@ -1,9 +1,15 @@
 import React, { memo } from 'react'
 
+import {
+    HotRadioWrapper
+}from './style'
+
+
+
 export default memo(function SJQHotAnchor() {
     return (
-        <div>
-            <h2>SJQHotAnchor</h2>
-        </div>
+        <HotRadioWrapper>
+            <h3 className="achor">热门主播</h3>
+        </HotRadioWrapper>
     )
 })
